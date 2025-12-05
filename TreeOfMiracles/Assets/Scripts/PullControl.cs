@@ -13,6 +13,7 @@ public class PullControl : MonoBehaviour
     [SerializeField] private Rigidbody stone;
     [SerializeField] private Transform snowSpawnPoint;
     [SerializeField] private GameObject[] snowRockPrefabs;
+    [SerializeField] private Transform pullWheel;
 
     private Vector3 startPos;
     private Rigidbody rb;
@@ -161,6 +162,9 @@ public class PullControl : MonoBehaviour
             pos.y -= deltaPower;
             transform.localPosition = pos;
             ChangeScale();
+            Vector3 wheelRot = pullWheel.rotation.eulerAngles;
+            wheelRot.z += deltaPower * 50;
+            pullWheel.rotation = Quaternion.Euler(wheelRot);
         }
     }
 
