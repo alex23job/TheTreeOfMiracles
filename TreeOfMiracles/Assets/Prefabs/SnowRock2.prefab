@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 6177798252837959920}
   - component: {fileID: 5486552555051296133}
   - component: {fileID: 8321586311130349941}
+  - component: {fileID: 1889667557021592676}
   m_Layer: 0
   m_Name: SnowRock2
-  m_TagString: Untagged
+  m_TagString: SnowRock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2937144876390972580, guid: 26be26a3e56d92c4aae2081f0d01db86, type: 3}
+  - {fileID: 2100000, guid: dde56f80c6bd4b747875000a7da57204, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -139,3 +140,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &1889667557021592676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837941983801624753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a8f54eae0f8b842a88b0e7920d0a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnowRockControl
