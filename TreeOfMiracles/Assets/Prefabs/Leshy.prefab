@@ -122,7 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   snowPrefab: {fileID: 8787293227604103393, guid: dbdfe265a4e170743b50a2bb0d58c2dd, type: 3}
-  speed: 150
+  speed: 500
+  rotateSpeed: 5
 --- !u!114 &4762366703258323991
 MonoBehaviour:
   m_ObjectHideFlags: 0

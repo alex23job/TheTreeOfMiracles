@@ -5,6 +5,7 @@ public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private GameObject snowPrefab;
     [SerializeField] private float speed;
+    [SerializeField] private float rotateSpeed = 5f;
 
     private List<Vector3> points = new List<Vector3>();
     private Vector3 spawnSnowPoint = Vector3.zero;
@@ -35,9 +36,17 @@ public class EnemyMovement : MonoBehaviour
     public void Move()
     {
         Vector3 direction = target - transform.position;
-        if (direction.magnitude > 0.1f)
+        direction.y = 0;
+        print($"name={gameObject.name}    dir={direction}  mag={direction.magnitude}");
+        if (direction.magnitude > 0.2f)
         {
+            direction.Normalize();
             rb.AddForce(direction * speed * Time.deltaTime);
+            
+            // Поворачиваемся в сторону следующей точки
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            // Плавно поворачиваемся
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         }
         else
         {

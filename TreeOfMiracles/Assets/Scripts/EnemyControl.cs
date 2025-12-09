@@ -58,8 +58,9 @@ public class EnemyControl : MonoBehaviour
                 {
                     if (enemyInfo.HP == 0 && enemyMovement != null)
                     {
-                        enemyMovement.ReserPath();
                         enemyArr[i].transform.position = enemySpawnPoints[i].position;
+                        enemyMovement.ReserPath();
+                        enemyInfo.SetHP(10);
                     }
                 }
                 enemyMovement.Move();
