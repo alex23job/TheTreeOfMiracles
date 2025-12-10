@@ -17,6 +17,7 @@ public class EnemyControl : MonoBehaviour
         timer = ThrowDelay;
         enemyArr = new GameObject[enemySpawnPoints.Length];
         List<Vector3> points = new List<Vector3>();
+        float sleep = 0f;
         for (int i = 0; i < enemySpawnPoints.Length; i++)
         {
             enemyArr[i] = Instantiate(enemyPrefab, enemySpawnPoints[i].position, Quaternion.identity);
@@ -27,7 +28,8 @@ public class EnemyControl : MonoBehaviour
             Vector3 p2 = new Vector3((p1.x + santaCar.position.x) / 2, p1.y, p1.z - 4f);
             points.Add(p2);
             points.Add(santaCar.position);
-            enemyArr[i].GetComponent<EnemyMovement>().SetPoints(points);
+            sleep = Random.Range(0.7f, 4.5f);
+            enemyArr[i].GetComponent<EnemyMovement>().SetPoints(points, sleep);
         }
     }
 
@@ -35,6 +37,7 @@ public class EnemyControl : MonoBehaviour
     void Update()
     {
         bool isThrow = false;
+        int deltaThrow = 0;
         if (timer > 0) timer -= Time.deltaTime;
         else
         {
@@ -48,7 +51,8 @@ public class EnemyControl : MonoBehaviour
             {
                 if (enemyMovement != null)
                 {
-                    enemyMovement.ThrowSnow(1);
+                    deltaThrow = Random.Range(1, 4);
+                    enemyMovement.ThrowSnow(deltaThrow);
                 }
             }
             EnemyInfo enemyInfo = enemyArr[i].GetComponent<EnemyInfo>();
@@ -59,7 +63,7 @@ public class EnemyControl : MonoBehaviour
                     if (enemyInfo.HP == 0 && enemyMovement != null)
                     {
                         enemyArr[i].transform.position = enemySpawnPoints[i].position;
-                        enemyMovement.ReserPath();
+                        enemyMovement.ResetPath();
                         enemyInfo.SetHP(10);
                     }
                 }

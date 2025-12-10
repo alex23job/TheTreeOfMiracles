@@ -14,24 +14,37 @@ public class PullControl : MonoBehaviour
     [SerializeField] private Transform snowSpawnPoint;
     [SerializeField] private GameObject[] snowRockPrefabs;
     [SerializeField] private Transform pullWheel;
+    [SerializeField] private Transform leverArm;
+    [SerializeField] private GameObject cubeUp;
 
     private Vector3 startPos;
     private Rigidbody rb;
     private bool isPower = false;
     private float deltaPower = 0f;
     private float coeffScale = 24000f;
+    private GameObject snowRock = null;
 
     private InputActionAsset inputActions;
 
     private void OnEnable()
     {
-        // Подписываемся на события перетаскивания        
+        // Подписываемся на события        
         print($"inputActions=<{inputActions}>");
         inputActions.FindActionMap("Player").FindAction("Aim").performed += Aim;
         inputActions.FindActionMap("Player").FindAction("ChargeShot").performed += BeginShot;
         //inputActions.FindActionMap("Player").FindAction("ChargeShot").performed += ContinueShot;
         //inputActions.FindActionMap("Player").FindAction("ChargeShot").started += ContinueShot;
         inputActions.FindActionMap("Player").FindAction("ChargeShot").canceled += EndShot;
+    }
+    private void OnDisable()
+    {
+        // Отписываемся от событий        
+        print($"inputActions=<{inputActions}>");
+        inputActions.FindActionMap("Player").FindAction("Aim").performed -= Aim;
+        inputActions.FindActionMap("Player").FindAction("ChargeShot").performed -= BeginShot;
+        //inputActions.FindActionMap("Player").FindAction("ChargeShot").performed -= ContinueShot;
+        //inputActions.FindActionMap("Player").FindAction("ChargeShot").started -= ContinueShot;
+        inputActions.FindActionMap("Player").FindAction("ChargeShot").canceled -= EndShot;
     }
 
     private void Awake()
@@ -97,6 +110,7 @@ public class PullControl : MonoBehaviour
         transform.localPosition = startPos;
         //print(transform.position);
         Invoke("SpawnSnowRock", 1f);
+        cubeUp.gameObject.SetActive(true);
         //ChangeScale();
     }
 
@@ -110,7 +124,15 @@ public class PullControl : MonoBehaviour
     private void SpawnSnowRock()
     {
         int num = Random.Range(0,snowRockPrefabs.Length);
-        Instantiate(snowRockPrefabs[num], snowSpawnPoint.position, Quaternion.identity);
+        snowRock = Instantiate(snowRockPrefabs[num], snowSpawnPoint.position, Quaternion.identity);
+        snowRock.transform.parent = leverArm;
+    }
+
+    private void ThrowSnowRock()
+    {
+        snowRock.transform.parent = null;
+        Destroy(snowRock, 3f);
+        cubeUp.gameObject.SetActive(false);
     }
 
     private void Aim(InputAction.CallbackContext context)
@@ -175,6 +197,7 @@ public class PullControl : MonoBehaviour
         stone.mass = 50f;
         deltaPower = 0;
         rb.isKinematic = false;
+        Invoke("ThrowSnowRock", 0.2f);
         Invoke("SetStartPos", 2f);
         Invoke("ChangeScale", 3f);
     }

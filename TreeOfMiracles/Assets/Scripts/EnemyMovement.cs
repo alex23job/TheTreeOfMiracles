@@ -14,6 +14,7 @@ public class EnemyMovement : MonoBehaviour
     private Animator anim;
     private int indexPoint = 0;
     private int countThrow = 0;
+    private bool isMove = false;
 
     private void Awake()
     {
@@ -35,9 +36,10 @@ public class EnemyMovement : MonoBehaviour
 
     public void Move()
     {
+        if (!isMove) return;
         Vector3 direction = target - transform.position;
         direction.y = 0;
-        print($"name={gameObject.name}    dir={direction}  mag={direction.magnitude}");
+        //print($"name={gameObject.name}    dir={direction}  mag={direction.magnitude}");
         if (direction.magnitude > 0.2f)
         {
             direction.Normalize();
@@ -51,7 +53,7 @@ public class EnemyMovement : MonoBehaviour
         }
         else
         {
-            transform.position = target;
+            transform.position = new Vector3(target.x, transform.position.y, target.z);
             NextPoint();
         }
     }
@@ -69,18 +71,20 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void SetPoints(List<Vector3> pathPoints)
+    public void SetPoints(List<Vector3> pathPoints, float sleep)
     {
         points.Clear();
         for (int i = 0; i < pathPoints.Count; i++)  points.Add(pathPoints[i]);
-        anim.SetBool("IsWalk", true);
+        Invoke("ResetPath", sleep);
+        /*anim.SetBool("IsWalk", true);
         indexPoint = 0;
-        target = points[0];
+        target = points[0];*/
         //print($"p1={points[0]} p2={points[1]} p3={points[2]}");
     }
 
-    public void ReserPath()
+    public void ResetPath()
     {
+        isMove = true;
         indexPoint = 0;
         target = points[0];
         anim.SetBool("IsWalk", true);
@@ -92,10 +96,11 @@ public class EnemyMovement : MonoBehaviour
         if (countThrow >= 10)
         {
             countThrow = 0;
+            isMove = false;
             anim.SetBool("IsWalk", false);
             anim.SetBool("IsThrow", true);
             //Invoke("SpawnSnow", 1f);
-            Invoke("EndThrow", 4f);
+            Invoke("EndThrow", 4.7f);
         }
     }
 
@@ -103,6 +108,7 @@ public class EnemyMovement : MonoBehaviour
     {
         anim.SetBool("IsThrow", false);
         anim.SetBool("IsWalk", true);
+        isMove = true;
     }
 
     private void SpawnSnow()
