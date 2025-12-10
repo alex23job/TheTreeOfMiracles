@@ -41,7 +41,8 @@ public class EnemyMovement : MonoBehaviour
         if (direction.magnitude > 0.2f)
         {
             direction.Normalize();
-            rb.AddForce(direction * speed * Time.deltaTime);
+            rb.MovePosition(rb.position + direction * speed * Time.deltaTime);
+            //rb.AddForce(direction * speed * Time.deltaTime);
             
             // ѕоворачиваемс€ в сторону следующей точки
             Quaternion targetRotation = Quaternion.LookRotation(direction);
